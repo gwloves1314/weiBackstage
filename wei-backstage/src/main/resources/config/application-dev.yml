@@ -24,10 +24,10 @@ spring:
         serialization.indent_output: true
     datasource:
         datasource-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: jdbc:mysql://10.3.128.56:3306/biocloud_compute?useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://xx.xx.xx.xx:3306/dataName?useUnicode=true&characterEncoding=utf8
         name:
-        username: test_pre
-        password: test_pre.123
+        username: xxxx
+        password: xxxx
         hikari:
             data-source-properties:
                 cachePrepStmts: true
