@@ -38,26 +38,26 @@ public class NioServer {
             LOGGER.info("正在扫描服务器端准备好的selector.....");
             int selectCount = selector.select();
             LOGGER.info("服务器准备好的选择器:" + selectCount);
-//            if (selectCount != 0) {
-            Set<SelectionKey> selectionKeys = selector.selectedKeys();
-            Iterator<SelectionKey> keyIterator = selectionKeys.iterator();
-            while (keyIterator.hasNext()) {
-                SelectionKey selectionKey = keyIterator.next();
-                keyIterator.remove();
-                if (selectionKey.isAcceptable()) {
-                    ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+            if (selectCount != 0) {
+                Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                Iterator<SelectionKey> keyIterator = selectionKeys.iterator();
+                while (keyIterator.hasNext()) {
+                    SelectionKey selectionKey = keyIterator.next();
+                    keyIterator.remove();
+                    if (selectionKey.isAcceptable()) {
+                        ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
 //                    serverSocketChannel.configureBlocking(false);
-                    SocketChannel socketChannel = serverSocketChannel.accept();
-                    socketChannel.configureBlocking(false);
-                    socketChannel.write(ByteBuffer.wrap(new String("收到连接请求....").getBytes()));
-                    socketChannel.register(selector, SelectionKey.OP_READ);
-                    LOGGER.info("服务端已发送数据....");
-                } else if (selectionKey.isReadable()) {
-                    //有读取的权限
-                    readMsg(selectionKey);
+                        SocketChannel socketChannel = serverSocketChannel.accept();
+                        socketChannel.configureBlocking(false);
+                        socketChannel.write(ByteBuffer.wrap(new String("收到连接请求....").getBytes()));
+                        socketChannel.register(selector, SelectionKey.OP_READ);
+                        LOGGER.info("服务端已发送数据....");
+                    } else if (selectionKey.isReadable()) {
+                        //有读取的权限
+                        readMsg(selectionKey);
+                    }
                 }
             }
-//            }
         }
     }
 
@@ -70,7 +70,7 @@ public class NioServer {
         byte[] bytes = byteBuffer.array();
         String getMsg = new String(bytes).trim();
         System.out.println("服务器收到的消息是:" + getMsg);
-        BufferedReader br  = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("请输入应答数据：");
         byteBuffer.clear();
         byteBuffer.flip();

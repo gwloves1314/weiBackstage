@@ -65,7 +65,7 @@ public class NioClient {
                 socketChannel.read(byteBuffer);
                 byte[] msgByte = byteBuffer.array();
                 String msg = new String(msgByte).trim();
-                if(!"".equals(msg)){
+                if (!"".equals(msg)) {
                     System.out.println("客户端收取的信息:" + msg);
                     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                     System.out.println("请输入客户端应答信息：");
@@ -74,14 +74,14 @@ public class NioClient {
                     Thread.sleep(2000);
                     socketChannel.write(ByteBuffer.wrap(br.readLine().getBytes()));
                     socketChannel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
-                }else{
+                } else {
                     continue;
                 }
             }
         }
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         NioClient nioClient = new NioClient(8080);
         nioClient.listen();
     }
